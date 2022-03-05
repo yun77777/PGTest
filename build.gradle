@@ -1,0 +1,24 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.2"
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // PG
+    }
+}
+// Arctic Fox 버전 이후에 생성된 프로젝트는 build.gradle이 아닌 settings.gradle에 allprojects 레포지토리를 추가함
+//
+//allprojects {
+//    repositories {
+////        jcenter()
+//        maven { url 'https://jitpack.io' }
+//    }
+//}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
