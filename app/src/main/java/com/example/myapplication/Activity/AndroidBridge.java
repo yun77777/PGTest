@@ -22,6 +22,7 @@ public class AndroidBridge {
     @JavascriptInterface
     public void test(String str, String type){
 //        final public Handler handler = new Handler();
+//        Intent intent = new Intent(activity, IamportCordova.class);
         Intent intent = new Intent(activity, IamportActivity.class);
 
         Log.d("str:",str);
@@ -38,6 +39,8 @@ public class AndroidBridge {
             intent.putExtra("userCode", userCode);
             intent.putExtra("data", data);
             intent.putExtra("type", type);
+
+
 //            intent.putExtra("callback", callback);
         } catch (JSONException e) {
             e.printStackTrace();

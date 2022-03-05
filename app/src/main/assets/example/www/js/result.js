@@ -1,8 +1,10 @@
-document.addEventListener('DOMContentLoaded', function() { 
+document.addEventListener('DOMContentLoaded', function() {
   var url = window.location.href;
   var query = url.split('?')[1];
   var decodedQuery = decodeURIComponent(query);
   var parsedQuery = JSON.parse(decodedQuery);
+
+  alert('parsedQuery:',parsedQuery);
 
   if (parsedQuery['imp_success'] == 'true') {
     document.getElementById('success-container').style.display = 'flex'; 

@@ -2,6 +2,7 @@ package com.example.myapplication.Activity;
 
 import android.app.Activity;
 import android.os.Build;
+import android.util.Log;
 import android.webkit.WebView;
 
 public class IamportPaymentWebViewClient extends IamportWebViewClient {
@@ -25,9 +26,13 @@ public class IamportPaymentWebViewClient extends IamportWebViewClient {
 
     /* WebView가 load되면 IMP.init, IMP.request_pay를 호출한다 */
     public void onPageFinished(WebView view, String url) {
+        Log.d("IMP:", url);
+
         if (!loadingFinished && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { // 무한루프 방지
             view.evaluateJavascript("IMP.init('" + userCode + "');", null);
             view.evaluateJavascript("IMP.request_pay(" + data + ", " + triggerCallback + ");", null);
+//            view.evaluateJavascript("alert('zzz');", null);
+            Log.d("triggerCallback:",triggerCallback);
 
             loadingFinished = true;
         }

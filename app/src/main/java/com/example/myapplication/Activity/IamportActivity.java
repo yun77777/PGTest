@@ -22,6 +22,7 @@ import android.webkit.WebView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class IamportActivity extends Activity {
@@ -74,9 +75,22 @@ public class IamportActivity extends Activity {
         /* SET WEBVIEW */
         String type = extras.getString("type");
         String params = extras.getString("params");
+        JSONObject json = null;
+        try {
+            json = new JSONObject(params);
+//            json.put("redirectUrl", IamportCordova.WEBVIEW_PATH);
+            json.put("redirectUrl", "file:///android_asset/PLUGINS/iamport/iamport-webview.html");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String result = json.toString();
+
+        Log.d("ac redirectUrl:", IamportCordova.WEBVIEW_PATH);
+
         Log.d("here in IamportActivity titleOptions", titleOptions);
         Log.d("here in IamportActivity type", type);
-        Log.d("here in IamportActivity params", params);
+        Log.d("here in IamportActivity params", result);
 
         switch (type) {
             case "nice": { // 나이스 && 실시간 계좌이체
@@ -88,13 +102,22 @@ public class IamportActivity extends Activity {
                 break;
             }
             default: { // 결제
-                webViewClient = new IamportPaymentWebViewClient(this, params);
+                webViewClient = new IamportPaymentWebViewClient(this, result);
                 break;
             }
         }
 
         Log.d("START@:", String.valueOf(webview));
         webview.setWebViewClient(webViewClient);
+
+
+//        Intent intent = new Intent(this.getApplicationContext(), WebViewActivity.class);
+//
+//
+//        int REQUEST_CODE = 6018;
+//
+//        this.startActivityForResult(intent, REQUEST_CODE);
+
     }
 
     private void setActionBar() {
@@ -181,6 +204,15 @@ public class IamportActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("onActivityResult", String.valueOf(data));
+
+
+        if (requestCode == IamportCordova.REQUEST_CODE && data != null) {
+            Bundle extras = data.getExtras();
+            String url = extras.getString("url");
+//            callback.success(url);
+        }
+
 
         if (requestCode == IamportCordova.REQUEST_CODE_FOR_NICE_TRANS) {
             webViewClient.bankPayPostProcess(requestCode, resultCode, data);
@@ -192,6 +224,7 @@ public class IamportActivity extends Activity {
         try {
             JSONObject titleObj = new JSONObject(titleOptions);
 
+            Log.d("titleObj:", String.valueOf(titleObj));
             String rightButtonType = titleObj.getString("rightButtonType");
             String rightButtonColor = titleObj.getString("rightButtonColor");
 
@@ -213,6 +246,8 @@ public class IamportActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Integer itemId = item.getItemId();
+        Log.d("itemId:", String.valueOf(itemId));
+
         switch (itemId) {
             case android.R.id.home: {
                 onCancelPayment();
@@ -220,6 +255,7 @@ public class IamportActivity extends Activity {
             }
             default: {
                 if (itemId.equals(actionBackItemId) || itemId.equals(actionCloseItemId)) {
+                    Log.d("clicked itemId:", String.valueOf(itemId));
                     onCancelPayment();
                 }
                 break;
@@ -232,6 +268,7 @@ public class IamportActivity extends Activity {
     private void onCancelPayment() {
         Intent data = new Intent();
         String url = "http://detectchangingwebview/iamport/cor?imp_success=false&error_code=IAMPORT_CORDOVA";
+        Log.d("url cancle:", url);
 
         data.putExtra("url", url);
 
@@ -241,6 +278,8 @@ public class IamportActivity extends Activity {
     }
 
     private int getLeftIconId(String buttonType) {
+        Log.d("url buttonType:", buttonType);
+
         if (buttonType.equals("back")) {
             return resources.getIdentifier("ic_action_back", "drawable", packageName);
         }
@@ -248,6 +287,8 @@ public class IamportActivity extends Activity {
     }
 
     private int getRightIconId(String buttonType) {
+        Log.d("url buttonType2:", buttonType);
+
         if (buttonType.equals("back")) {
             return actionBackItemId;
         }

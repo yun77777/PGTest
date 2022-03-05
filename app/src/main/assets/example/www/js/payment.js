@@ -70,6 +70,7 @@ var getType = function(data) {
 }
 
 function callback(response) {
+alert('z')
   /**
    * 결과 페이지로 이동
    * 결제 결과는 JSON을 string화 해서 쿼리 형태로 넘김

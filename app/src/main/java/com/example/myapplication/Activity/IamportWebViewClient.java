@@ -30,11 +30,15 @@ abstract public class IamportWebViewClient extends WebViewClient {
 
         try {
             JSONObject jsonParams = new JSONObject(params);
+            Log.d("check jsonParams:", String.valueOf(jsonParams));
 
             userCode = jsonParams.getString("userCode");
             data = jsonParams.getJSONObject("data");
-            triggerCallback = jsonParams.getString("triggerCallback");
+            triggerCallback = "function(e){console.log('e:',e);}";
+//            triggerCallback = jsonParams.getString("triggerCallback");
             redirectUrl = jsonParams.getString("redirectUrl");
+
+            Log.d("check redirectUrl:",redirectUrl);
         } catch (Exception e) {
 
         }
@@ -43,9 +47,13 @@ abstract public class IamportWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Log.i("url", url);
+        Log.d("check@ redirectUrl:",redirectUrl);
+
         this.webView = view;
 
         if (isOver(url)) {
+            Log.d("check@ 1:",redirectUrl);
+
             Intent data = new Intent();
             data.putExtra("url", url);
 
@@ -54,7 +62,13 @@ abstract public class IamportWebViewClient extends WebViewClient {
 
             return true;
         }
+
+        Log.d("check@ redirectUrl:",redirectUrl);
+        Log.d("check@ url:",url);
+        Log.d("check@ 2?:",String.valueOf(isUrlStartsWithProtocol(url)));
+
         if (isUrlStartsWithProtocol(url)) return false;
+        Log.d("url@ 3:",url);
 
         Intent intent = null;
         try {
@@ -92,6 +106,7 @@ abstract public class IamportWebViewClient extends WebViewClient {
 
     /* 결제/본인인증 종료되었는지 여부를 판단한다 */
     protected boolean isOver(String url) {
+        Log.d("redirectUrl:",redirectUrl);
         return url.startsWith(redirectUrl);
     }
 

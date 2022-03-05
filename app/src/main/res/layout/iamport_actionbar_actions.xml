@@ -5,11 +5,11 @@
         android:icon="@drawable/ic_action_close"
         android:title="Close"
         android:showAsAction="always"
-        android:visible="false" />
+        android:visible="true" />
     <Button
         android:id="@+id/action_back"
         android:icon="@drawable/ic_action_back"
         android:title="Back"
         android:showAsAction="always"
-        android:visible="false" />
+        android:visible="true" />
 </menu>

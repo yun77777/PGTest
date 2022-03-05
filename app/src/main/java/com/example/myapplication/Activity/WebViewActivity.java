@@ -14,6 +14,8 @@ public class WebViewActivity extends AppCompatActivity {
     private WebView webView;
     private String url = "file:///android_asset/example/www/index.html";
 
+    static final int REQUEST_CODE = 6018;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
